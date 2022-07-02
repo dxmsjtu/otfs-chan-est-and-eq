@@ -115,7 +115,7 @@ classdef SoSBasedChannel < matlab.System
         
         %% Rayleigh Fading
         % This implementation is based on the following paper in order to support MIMO channel (multiple uncorrelated paths)
-        % [2] Patzold, Matthias, Cheng-Xiang Wang, and Bjorn Olav Hogstad. “Two New Sum-of-Sinusoids-Based Methods for the Efficient Generation of Multiple Uncorrelated Rayleigh Fading Waveforms.? IEEE Transactions on Wireless Communications 8, no. 6 (June 2009): 3122?31. https://doi.org/10.1109/TWC.2009.080769.
+        % [2] Patzold, Matthias, Cheng-Xiang Wang, and Bjorn Olav Hogstad. Two New Sum-of-Sinusoids-Based Methods for the Efficient Generation of Multiple Uncorrelated Rayleigh Fading Waveforms.? IEEE Transactions on Wireless Communications 8, no. 6 (June 2009): 3122?31. https://doi.org/10.1109/TWC.2009.080769.
         function initRayleighFading(this)
            
             numSinusoids = length(this.pathAvgGains);

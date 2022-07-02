@@ -30,7 +30,7 @@ classdef OtfsDeconvolutionalEqualizer < matlab.System
             this.upsilon = zeros(this.NumSymbols,length(kappa));
             for k = 1:length(kappa)
                 x = kappa(k) - (0:this.NumSymbols-1);
-                for i = 1:this.NumSymbols
+                for i = 1:this.NumSymbols %(18) of [1]
                     this.upsilon(:,k) = this.upsilon(:,k) + 1/this.NumSymbols * exp(1i*2*pi*(i-1)*x/this.NumSymbols).';
                 end
             end

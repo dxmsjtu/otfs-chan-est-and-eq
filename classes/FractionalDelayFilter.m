@@ -12,17 +12,14 @@ classdef FractionalDelayFilter < matlab.System
         function this = FractionalDelayFilter(varargin) % Constructor
             if nargin > 0
                 setProperties(this, nargin, varargin{:}, 'FilterOrder');
-            end
-            
+            end            
             if isempty(this.FilterOrder)  % The filter order should be less than 10 because the accuracy will be degraded due to the rounding error even in float64
                 this.FilterOrder = 8;
             end
-        end
-        
+        end        
         function init(this, delays)
             this.fdfCoeffs = cell(length(delays),1);
-            this.nonZeroSampIndices = zeros(length(delays),1);
-            
+            this.nonZeroSampIndices = zeros(length(delays),1);            
             for delayIndex = 1:length(delays)
                 delay = delays(delayIndex);
                 filterOrder = min(floor(2*delay+1), this.FilterOrder);  
@@ -30,7 +27,7 @@ classdef FractionalDelayFilter < matlab.System
 
                 % Calc a modified coefficient matrix of modified Farrow structure
                 % Note: This algorithm is based on a book below.
-                % [1] Välimäki, V., and T. I. Laakso. “Fractional Delay Filters—Design and Applications.? In Nonuniform Sampling, edited by Farokh Marvasti, 835?95. Information Technology: Transmission, Processing, and Storage. Boston, MA: Springer US, 2001. https://doi.org/10.1007/978-1-4615-1229-5_20.
+                % [1] Välimäki, V., and T. I. Laakso. Fractional Delay Filters¡ªDesign and Applications In Nonuniform Sampling, edited by Farokh Marvasti, 835?95. Information Technology: Transmission, Processing, and Storage. Boston, MA: Springer US, 2001. https://doi.org/10.1007/978-1-4615-1229-5_20.
                 N = filterOrder;
                 U = fliplr(vander(0:N));
                 Q = invcramer(U);  % solve inverse matrix using Cramer's rule
@@ -42,13 +39,11 @@ classdef FractionalDelayFilter < matlab.System
                         end
                     end
                 end
-                Qf = T*Q;
-                
+                Qf = T*Q;                
                 % Calculate filter coefficients of the FIR filter
                 fracDelay = mod(delay,1);
                 delayVec = fracDelay.^(0:filterOrder);
                 this.fdfCoeffs{delayIndex} = delayVec * Qf;
-
                 % Calculate non zero sample index (=start index)
                 if mod(filterOrder,2)==0  % even
                     this.nonZeroSampIndices(delayIndex) = round(delay+0.5) - filterOrder/2;  % non-zero sample index, written as equation (3.37) in [1]

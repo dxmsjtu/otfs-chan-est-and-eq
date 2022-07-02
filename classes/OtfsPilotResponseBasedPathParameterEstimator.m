@@ -19,10 +19,8 @@ classdef OtfsPilotResponseBasedPathParameterEstimator < matlab.System
                 'NumDopplerBins', ...      % N
                 'NumDelayBins', ...        % M
                 'SamplingRate' ...
-                );
-            
-            kappa = 0:1/this.DividingNumber:1-1/this.DividingNumber;
-            
+                );            
+            kappa = 0:1/this.DividingNumber:1-1/this.DividingNumber;            
             this.upsilon = zeros(this.NumDopplerBins,length(kappa));
             for k = 1:length(kappa)
                 x = kappa(k) - (0:this.NumDopplerBins-1);
@@ -30,9 +28,7 @@ classdef OtfsPilotResponseBasedPathParameterEstimator < matlab.System
                     this.upsilon(:,k) = this.upsilon(:,k) + 1/this.NumDopplerBins * exp(1i*2*pi*(i-1)*x/this.NumDopplerBins).';
                 end
             end
-        end
-        
-        
+        end   
         function [estGains, estDopplers, estDelays, estPhaseOffsets] = estimate(this, Hdd, alpha, beta, noiseVar)
             % ----- DESCRIPTION -----
             % This function estimates path parameters from the pilot response in the delay Doppler domain based on [1].
